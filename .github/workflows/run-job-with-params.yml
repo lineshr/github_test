@@ -1,18 +1,18 @@
-name: Trigger Action on a CRON Schedule
-      
-on:
-  schedule:
-    - cron: '1/3 * * * *'
-  workflow_call:
-    inputs:
-      logLevel:
-        required: true
-        type: string
 
-jobs:
-  test:
-    uses: ./.github/workflows/run-job-with-params.yml
-    secrets: inherit
-    with:
-      springProfile: 'production'
-      logLevel: ${{ inputs.logLevel || 'DEBUG' }}
+
+name: WebDriverIO Automation
+on:
+  workflow_dispatch:
+    inputs:
+        typeOfTesting:
+          type: choice
+          description: Select Type of Test
+          default: 'stage-test-local-All'
+          required: true
+          options: 
+          - stage-test-local-All
+          - stage-test
+          - stage-test-local-Sanity
+          - prod-test
+  schedule:
+    - cron: "*/5 * * * *"
