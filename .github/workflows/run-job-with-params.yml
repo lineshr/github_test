@@ -1,25 +1,23 @@
 
 
 name: WebDriverIO Automation
+
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-        typeOfTesting:
-          type: choice
-          description: Select Type of Test
-          default: 'stage-test-local-All'
-          required: true
-          options: 
-          - stage-test-local-All
-          - stage-test
-          - stage-test-local-Sanity
-          - prod-test
+      config-path:
+        required: true
+        type: string
+    secrets:
+      envPAT:
+        required: true
   schedule:
-    - cron: "*/5 * * * *"
+           - cron: "*/3 * * * *"  
+    
 jobs:
   test:
     uses: ./.github/workflows/run-job-with-params.yml
     secrets: inherit
     with:
       springProfile: 'production'
-      logLevel: ${{ inputs.logLevel || 'DEBUG' }}
+      logLevel: ${{ inputs.logLevel || 'DEBUG' }}    
