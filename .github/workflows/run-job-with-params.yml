@@ -16,3 +16,10 @@ on:
           - prod-test
   schedule:
     - cron: "*/5 * * * *"
+jobs:
+  test:
+    uses: ./.github/workflows/run-job-with-params.yml
+    secrets: inherit
+    with:
+      springProfile: 'production'
+      logLevel: ${{ inputs.logLevel || 'DEBUG' }}
