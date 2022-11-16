@@ -1,27 +1,26 @@
-name: Mixed inputs
+name: K6 Test Maskinporten
 
 on:
   workflow_dispatch:
     inputs:
-      name:
-        type: choice
-        description: Who to greet
-        options: 
-        - monalisa
-        - cschleiden
-      message:
+      environment:
+        description: 'Environment: either systest (maskinporten.dev) or test (test.maskinporten.no)'
         required: true
-      use-emoji:
-        type: boolean
-        description: Include  emojis
-        options: 
-        - monalisa
-        - cschleiden
-
-jobs:
-  greet:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Send greeting
-      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }}
+        type: choice
+        options:
+          - "https://maskinporten.dev"
+          - "https://test.maskinporten.no"
+          - "https://test1.maskinporten.no"
+          - "https://ver2.maskinporten.no"
+      test-type:
+        description: 'Load test config to run: stress-test.json | stress-test-breakpoint.json | normal-load.json | normal-30min-load.json | normal-15min-load.json | normal-5min-load.json | normal-1s-load.json | stabilitet-test.json | stabilitet-test-200.json'
+        required: true
+        default: 'normal-load.json'
+      clients-file:
+        description: 'Clients file as JSON. Default ./clients-ver2.json'
+        required: true
+        type: choice
+        options:
+          - "./clients-ver2.json"
+          - "./buggy-clients-ver2.json"
+    
