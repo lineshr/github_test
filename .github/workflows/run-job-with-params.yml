@@ -1,8 +1,26 @@
-name: gh-action-dropdown-list-input
+name: Mixed inputs
+
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Environment'
+      name:
+        type: choice
+        description: Who to greet
+        options: 
+        - monalisa
+        - cschleiden
+      message:
         required: true
-        default: 'dev,staging,[uat],prod'
+      use-emoji:
+        type: boolean
+        description: Include  emojis
+      environment:
+        type: environment
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }}
