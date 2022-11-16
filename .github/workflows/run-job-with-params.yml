@@ -1,23 +1,30 @@
-
-
-name: WebDriverIO Automation
+name: CI
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
-      config-path:
-        required: true
-        type: string
-    secrets:
-      envPAT:
-        required: true
-  schedule:
-           - cron: "*/3 * * * *"  
-    
+      environment:
+        type: environment
+        description: Select the environment
+      boolean:
+        type: boolean
+        description: True or False
+      choice:
+        type: choice
+        description: Make a choice
+        options:
+        - foo
+        - bar
+        - baz
 jobs:
-  test:
-    uses: ./.github/workflows/run-job-with-params.yml
-    secrets: inherit
-    with:
-      springProfile: 'production'
-      logLevel: ${{ inputs.logLevel || 'DEBUG' }}    
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: greet
+        run: | 
+          echo "environment is ${{ github.event.inputs.environment }} / ${{ inputs.environment }}"
+          echo "boolean is ${{ github.event.inputs.boolean }}" / ${{ inputs.boolean }} 
+          echo "choice is ${{ github.event.inputs.choice }}" / ${{ inputs.choice }}
